@@ -19,6 +19,7 @@ app.use(methodOverride());
 
 var router = express.Router();
 router.route('/messages').get(messageController.findAllMessages);
+router.route('/message').post(messageController.createMessage);
 app.use(router);
 
 app.listen(3000, function() {

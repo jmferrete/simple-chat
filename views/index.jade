@@ -1,0 +1,25 @@
+html
+	head
+		title!= title
+	body
+		div(class="chatList")
+			table
+				tr
+					th manager
+					th plantilla
+					th on/off
+				each val in ['username']
+					tr
+						td
+							a=val
+						td
+							a
+								i(class="fa fa-users")
+						td
+							a
+								i(class="fa fa-comment")
+		div(class="chatMessages")
+			ul(id="messagesBoard")
+			form(action="")
+				input(id="message", autocomplete="off")
+				button Send

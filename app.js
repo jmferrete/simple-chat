@@ -19,15 +19,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-var router = express.Router();
-router.route('/index').get(chatController.showChat);
+var http = require('http').Server(app);
+    io = require('socket.io')(http);
 
-router.route('/messages').get(messageController.findAllMessages);
-router.route('/message').post(messageController.createMessage);
+io.on('connection', function(socket){
+	console.log("User connected.");
+	socket.on('chat message', function(msg){
+		io.emit('chat message', msg);
+	});
+});
 
-app.use(router);
+app.get('/index', chatController.showChat);
+app.get('/messages', messageController.findAllMessages);
+app.post('/message', messageController.createMessage);
 
-app.listen(3000, function() {
+http.listen(3000, function() {
   console.log("Node server running on http://localhost:3000");
 });
 

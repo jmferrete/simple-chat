@@ -1,6 +1,19 @@
 html
 	head
 		title!= title
+		script(src="https://cdn.socket.io/socket.io-1.2.0.js")
+		script(src="http://code.jquery.com/jquery-1.11.1.js")
+		script(src="/socket.io/socket.io.js")
+		script
+			|	var socket = io();
+			|	function sendMessage(){
+			|		socket.emit('chat message', $('#message').val());
+			|		$('#message').val('');
+			|		return false;
+			|	};
+			|	socket.on('chat message', function(msg){
+			|		$('#chatMessagesBoard').append($('<li>').text(msg));
+			|	});
 	body
 		div(class="chatList")
 			table
@@ -19,7 +32,7 @@ html
 							a
 								i(class="fa fa-comment")
 		div(class="chatMessages")
-			ul(id="messagesBoard")
-			form(action="")
+			ul(id="chatMessagesBoard")
+			form(action="javascript:sendMessage();")
 				input(id="message", autocomplete="off")
 				button Send

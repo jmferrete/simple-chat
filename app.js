@@ -27,13 +27,13 @@ io.on('connection', function(socket){
 
     socket.on('get users', function(msg) {
         var connectedClients = io.connected;
-        var usernames = [];
+        var users = [];
         for (var key in connectedClients) {
             //console.log("Username", connectedClients[key].username);
-            usernames.push(connectedClients[key].username);
+            users.push({id:connectedClients[key].id,username:connectedClients[key].username});
         }
-        console.log(usernames);
-        io.emit('chat users', usernames);
+        console.log(users);
+        io.emit('chat users', users);
     });
 
     socket.on('add user', function(user){

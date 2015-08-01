@@ -26,7 +26,9 @@ html
 			|	socket.on('chat users', function(clients){
 			|		$('#chatUsersBoard').html($('<tr>').html($('<th>').text('User')));
 			|		for(var key in clients) {
-			|			$('#chatUsersBoard').append($('<tr>').append($('<td>').text(clients[key])));
+			|			if(clients[key]["id"] !== socket["id"]) {
+			|				$('#chatUsersBoard').append($('<tr>').append($('<td>').text(clients[key]["username"])));
+			|			}
 			|		}
 			|	});
 	body

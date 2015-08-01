@@ -38,6 +38,7 @@ html
 			|		}
 			|	});
 			|	socket.on('open chat', function(msg){
+			|		$('#chatConversationId').val(msg["room"]);
 			|		$('#chatUser').text("Chat with " + msg["username"]).show();
 			|		$('#chatMessage').show();
 			|		$('#sendMessage').show();
@@ -52,7 +53,6 @@ html
 			form(action="javascript:sendMessage()")
 				input(type="hidden",id="chatToken",value=chatToken)
 				input(type="hidden",id="chatConversationId",value=chatConversationId)
-				input(type="hidden",id="chatUserId",value=chatUserId)
 				p(id="chatUser", style="display:none;")
 				input(id="chatMessage", autocomplete="off", style="display:none;")
 				button(id="sendMessage", autocomplete="off", style="display:none;") Send

@@ -29,10 +29,8 @@ io.on('connection', function(socket){
         var connectedClients = io.connected;
         var users = [];
         for (var key in connectedClients) {
-            //console.log("Username", connectedClients[key].username);
             users.push({id:connectedClients[key].id,username:connectedClients[key].username});
         }
-        console.log(users);
         io.emit('chat users', users);
     });
 
@@ -41,17 +39,19 @@ io.on('connection', function(socket){
     });
 
     socket.on('chat with user', function(user){
-        console.log("User ->", user);
-        var room = socket.id + user.id
+        var room = socket.id + user.id;
         socket.join(room);
         var theOtherSocket = io.connected[user.id];
-        theOtherSocket.join(room);
-        io.emit('open chat', {username: theOtherSocket.username});
-        socket.broadcast.to(user.id).emit('open chat', {username: socket.username});
+        if (theOtherSocket) {
+            theOtherSocket.join(room);
+            io.emit('open chat', {username: theOtherSocket.username, room: room});
+            socket.broadcast.to(user.id).emit('open chat', {username: socket.username, room: room});
+        }
     });
 
     socket.on('chat message', function(msg){
-        io.emit('chat message', msg.messageBody);
+        var room = msg.conversationId;
+        io.to(room).emit('chat message', msg.messageBody);
     });
 });
 

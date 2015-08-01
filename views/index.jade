@@ -15,7 +15,13 @@ html
 			|		});
 			|		$('#chatMessage').val('');
 			|		return false;
-			|	};
+			|	}
+			|	function chatWith(userId){
+			|		socket.emit('chat with user', {
+			|			id: userId
+			|		});
+			|		return false;
+			|	}
 			|	socket.emit('add user', {
 			|		username: Math.floor((Math.random() * 100000) + 1)
 			|	});
@@ -27,9 +33,14 @@ html
 			|		$('#chatUsersBoard').html($('<tr>').html($('<th>').text('User')));
 			|		for(var key in clients) {
 			|			if(clients[key]["id"] !== socket["id"]) {
-			|				$('#chatUsersBoard').append($('<tr>').append($('<td>').text(clients[key]["username"])));
+			|				$('#chatUsersBoard').append($('<tr>').append($("<td onclick='chatWith(\"" + clients[key]["id"].trim() + "\");'>").text(clients[key]["username"])));
 			|			}
 			|		}
+			|	});
+			|	socket.on('open chat', function(msg){
+			|		$('#chatUser').text("Chat with " + msg["username"]).show();
+			|		$('#chatMessage').show();
+			|		$('#sendMessage').show();
 			|	});
 	body
 		div(class="chatUserList")
@@ -38,9 +49,10 @@ html
 					th User
 		div(class="chatMessages")
 			ul(id="chatMessagesBoard")
-			form(action="javascript:sendMessage();")
+			form(action="javascript:sendMessage()")
 				input(type="hidden",id="chatToken",value=chatToken)
 				input(type="hidden",id="chatConversationId",value=chatConversationId)
 				input(type="hidden",id="chatUserId",value=chatUserId)
-				input(id="chatMessage", autocomplete="off")
-				button Send
+				p(id="chatUser", style="display:none;")
+				input(id="chatMessage", autocomplete="off", style="display:none;")
+				button(id="sendMessage", autocomplete="off", style="display:none;") Send

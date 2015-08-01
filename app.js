@@ -40,6 +40,16 @@ io.on('connection', function(socket){
         socket.username = user.username;
     });
 
+    socket.on('chat with user', function(user){
+        console.log("User ->", user);
+        var room = socket.id + user.id
+        socket.join(room);
+        var theOtherSocket = io.connected[user.id];
+        theOtherSocket.join(room);
+        io.emit('open chat', {username: theOtherSocket.username});
+        socket.broadcast.to(user.id).emit('open chat', {username: socket.username});
+    });
+
     socket.on('chat message', function(msg){
         io.emit('chat message', msg.messageBody);
     });

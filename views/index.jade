@@ -5,34 +5,40 @@ html
 		script(src="http://code.jquery.com/jquery-1.11.1.js")
 		script(src="/socket.io/socket.io.js")
 		script
-			|	var socket = io();
+			|	var socket = io.connect('http://localhost:3000/my-namespace');
 			|	function sendMessage(){
-			|		socket.emit('chat message', $('#message').val());
-			|		$('#message').val('');
+			|		socket.emit('chat message', {
+			|			token: $('#chatToken').val(),
+			|			conversationId: $('#chatConversationId').val(),
+			|			userId: $('#chatUserId').val(),
+			|			messageBody: $('#chatMessage').val()
+			|		});
+			|		$('#chatMessage').val('');
 			|		return false;
 			|	};
+			|	socket.emit('add user', {
+			|		username: Math.floor((Math.random() * 100000) + 1)
+			|	});
+			|	socket.emit('get users', {});
 			|	socket.on('chat message', function(msg){
 			|		$('#chatMessagesBoard').append($('<li>').text(msg));
 			|	});
+			|	socket.on('chat users', function(clients){
+			|		$('#chatUsersBoard').html($('<tr>').html($('<th>').text('User')));
+			|		for(var key in clients) {
+			|			$('#chatUsersBoard').append($('<tr>').append($('<td>').text(clients[key])));
+			|		}
+			|	});
 	body
-		div(class="chatList")
-			table
+		div(class="chatUserList")
+			table(id="chatUsersBoard")
 				tr
-					th manager
-					th plantilla
-					th on/off
-				each val in ['username']
-					tr
-						td
-							a=val
-						td
-							a
-								i(class="fa fa-users")
-						td
-							a
-								i(class="fa fa-comment")
+					th User
 		div(class="chatMessages")
 			ul(id="chatMessagesBoard")
 			form(action="javascript:sendMessage();")
-				input(id="message", autocomplete="off")
+				input(type="hidden",id="chatToken",value=chatToken)
+				input(type="hidden",id="chatConversationId",value=chatConversationId)
+				input(type="hidden",id="chatUserId",value=chatUserId)
+				input(id="chatMessage", autocomplete="off")
 				button Send

@@ -22,13 +22,10 @@ exports.createMessage = function(req, res) {
 
 	message.save(function(err){
 		if(!err){
-			console.log("Created");
+			console.log("Created message: " + req.body.messageBody);
 		} else {
 			console.log("ERROR: " + err);
 		}
 	});
-
-	console.log('POST /message');
-	res.status(200).jsonp(message);
 };
 

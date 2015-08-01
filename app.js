@@ -1,7 +1,7 @@
 var express = require("express"),
     app = express(),
     bodyParser  = require("body-parser"),
-    methodOverride = require("method-override");
+    methodOverride = require("method-override"),
     mongoose = require('mongoose');
 
 var mongoose = require('mongoose');
@@ -20,13 +20,29 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 var http = require('http').Server(app);
-    io = require('socket.io')(http);
+var io = require('socket.io')(http).of('/my-namespace');
 
 io.on('connection', function(socket){
-	console.log("User connected.");
-	socket.on('chat message', function(msg){
-		io.emit('chat message', msg);
-	});
+	console.log("User " + socket.id + " connected.");
+
+    socket.on('get users', function(msg) {
+        var connectedClients = io.connected;
+        var usernames = [];
+        for (var key in connectedClients) {
+            //console.log("Username", connectedClients[key].username);
+            usernames.push(connectedClients[key].username);
+        }
+        console.log(usernames);
+        io.emit('chat users', usernames);
+    });
+
+    socket.on('add user', function(user){
+        socket.username = user.username;
+    });
+
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg.messageBody);
+    });
 });
 
 app.get('/index', chatController.showChat);

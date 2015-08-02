@@ -44,14 +44,14 @@ io.on('connection', function(socket){
 		var theOtherSocket = io.connected[user.id];
 		if (theOtherSocket) {
 			theOtherSocket.join(room);
-			socket.emit('open chat', {username: theOtherSocket.username, room: room});
-			socket.broadcast.to(user.id).emit('open chat', {username: socket.username, room: room});
+			socket.emit('open chat', {room: room});
 		}
 	});
 
 	socket.on('chat message', function(msg){
 		var room = msg.conversationId;
 		var me = (msg.userId === socket.id)
+		io.to(room).emit('open chat', {room: room});
 		io.to(room).emit('chat message', {messageBody: msg.messageBody, me: me, room: room});
 	});
 });

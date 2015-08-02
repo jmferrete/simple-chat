@@ -19,12 +19,6 @@ function chatWith(userId){
 	return false;
 }
 
-socket.emit('add user', {
-	username: Math.floor((Math.random() * 100000) + 1)
-});
-
-socket.emit('get users', {});
-
 socket.on('chat message', function(msg){
 	messages[msg["room"]] = messages[msg["room"]] || [];
 	messages[msg["room"]].push(msg["messageBody"]);
@@ -56,7 +50,15 @@ socket.on('open chat', function(msg){
 	for(var messageKey in messagesForCurrentRoom) {
 		$('#chatMessagesBoard').append($('<li>').text(messagesForCurrentRoom[messageKey]));
 	}
-	$('#chatUser').text("Chat with " + msg["username"]).show();
+	$('#chatUser').text("Chatting room " + msg["room"]).show();
 	$('#chatMessage').show();
 	$('#sendMessage').show();
+});
+
+$(document).ready(function() {
+	socket.emit('add user', {
+		username: $('#chatUsername').text() //Math.floor((Math.random() * 100000) + 1)
+	});
+
+	socket.emit('get users', {});
 });

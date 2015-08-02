@@ -1,11 +1,13 @@
 html
 	head
-		title!= title
+		title!= username
 		script(src="https://cdn.socket.io/socket.io-1.2.0.js")
 		script(src="http://code.jquery.com/jquery-1.11.1.js")
 		script(src="/socket.io/socket.io.js")
 		script(src="/public/chat/client.js")
 	body
+		h1
+			span(id="chatUsername")!= username
 		div(class="chatUserList")
 			table(id="chatUsersBoard")
 				tr

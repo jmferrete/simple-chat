@@ -5,11 +5,24 @@ var mongoose = require('mongoose');
 exports.showChat = function(req, res) {
 	if(req.err) res.send(500).body(err.message);
 
+	var textArray = [
+		'Miguel',
+		'Ferrete',
+		'Jotas',
+		'Jlo',
+		'Marta',
+		'María',
+		'Martilla'
+	];
+	var randomNumber = Math.floor(Math.random()*textArray.length);
+	var username = textArray[randomNumber]
+
 	console.log('GET /index')
 	res.render('index', {
 		chatToken: "1",
 		chatConversationId: "1",
-		chatUserId: "1"
+		chatUserId: "1",
+		username: username
 	});
 
 };

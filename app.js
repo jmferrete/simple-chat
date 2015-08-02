@@ -51,7 +51,8 @@ io.on('connection', function(socket){
 
     socket.on('chat message', function(msg){
         var room = msg.conversationId;
-        io.to(room).emit('chat message', msg.messageBody);
+        var me = (msg.userId === socket.id)
+        io.to(room).emit('chat message', {messageBody: msg.messageBody, me: me, room: room});
     });
 });
 

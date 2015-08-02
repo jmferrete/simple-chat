@@ -57,6 +57,7 @@ io.on('connection', function(socket){
 });
 
 app.get('/index', chatController.showChat);
+app.get('/public/*', chatController.provideStatic);
 app.get('/messages', messageController.findAllMessages);
 app.post('/message', messageController.createMessage);
 

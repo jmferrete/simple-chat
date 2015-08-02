@@ -11,5 +11,10 @@ exports.showChat = function(req, res) {
 		chatConversationId: "1",
 		chatUserId: "1"
 	});
+
 };
 
+exports.provideStatic = function(req, res){
+	var path = req.params[0] ? req.params[0] : 'index.html';
+	res.sendFile(path, {root: './public'});
+}

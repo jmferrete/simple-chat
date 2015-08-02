@@ -44,7 +44,7 @@ io.on('connection', function(socket){
         var theOtherSocket = io.connected[user.id];
         if (theOtherSocket) {
             theOtherSocket.join(room);
-            io.emit('open chat', {username: theOtherSocket.username, room: room});
+            socket.emit('open chat', {username: theOtherSocket.username, room: room});
             socket.broadcast.to(user.id).emit('open chat', {username: socket.username, room: room});
         }
     });

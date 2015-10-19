@@ -1,12 +1,19 @@
 {
- "name": "async-chat",
- "version": "0.0.1",
- "dependencies": {
- "mongoose": "~4.1.0",
- "express": "^4.7.1",
- "socket.io": "~1.3.6",
- "method-override": "^2.1.2",
- "body-parser": "^1.5.1",
- "jade": ""
- }
+	"name": "async-chat",
+	"version": "0.1",
+	"description": "Simple chat using node.js, express.js, socket.io, mongoose.js and jade.",
+	"keywords": "simple chat async-chat",
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "José Manuel Ferrete Benítez",
+		"email": "ferrete1989@gmail.com"
+	},
+	"dependencies": {
+		"mongoose": "~4.1.0",
+		"express": "^4.7.1",
+		"socket.io": "~1.3.6",
+		"method-override": "^2.1.2",
+		"body-parser": "^1.5.1",
+		"jade": ""
+	}
 }
